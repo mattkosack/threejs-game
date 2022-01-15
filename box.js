@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 let renderer;
 let camera;
@@ -15,8 +16,6 @@ let cameraDistance = 0.5;
 
 let dir = new THREE.Vector3;
 let goal = new THREE.Object3D;
-let follow = new THREE.Object3D;
-
 
 
 window.addEventListener('load', function init() {
@@ -30,9 +29,9 @@ window.addEventListener('load', function init() {
     scene = new THREE.Scene();
 
     // Set up the lighting
-    light = new THREE.PointLight( '#FFFFFF', 1, 100 )
-    light.position.set( 25, 25, 25 )
-    scene.add(light)
+    light = new THREE.PointLight( '#FFFFFF', 1, 100 );
+    light.position.set( 25, 25, 25 );
+    scene.add(light);
 
     // Set up the camera
     camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
@@ -44,13 +43,14 @@ window.addEventListener('load', function init() {
     goal.add( camera );
 
     // Help to actually see axes
-    gridHelper = new THREE.GridHelper( 40, 40 )
+    gridHelper = new THREE.GridHelper( 40, 40 );
     scene.add(gridHelper);
 
     // The Cube
     const geometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
     const material = new THREE.MeshNormalMaterial();
     cube = new THREE.Mesh( geometry, material );
+    cube.position.set( 0, 0.05, 0 );
     scene.add( cube );
 
     initEvents();
@@ -72,15 +72,15 @@ function initEvents() {
  */
 function onKeyDown(e) {
     // Keys pressed for translations
-    if (e.key == 'w') {
+    if (e.key === 'w') {
         speed = 0.01; // Move forward
-    } else if (e.key == 's') {
+    } else if (e.key === 's') {
         speed = -0.01; // Move backward
-    } else if (e.key == 'a') {
+    } else if (e.key === 'a') {
         cube.rotateY(0.1); // Rotate left (yaw)
-    } else if (e.key == 'd') {
+    } else if (e.key === 'd') {
         cube.rotateY(-0.1); // Rotate right (yaw)
-    } else if (e.key == 'b') {
+    } else if (e.key === 'b') {
         speed = 0.0; // Brake
     }
 }
