@@ -1,10 +1,13 @@
 /* eslint-disable no-undef */
-'use strict';
+// 'use strict';
 let renderer;
 let camera;
 let scene;
 let light;
 let cube;
+
+let numCubes = 50;
+let smallCubes = [];
 
 let speed = 0.0;
 let velocity = 0.0;
@@ -53,6 +56,21 @@ window.addEventListener('load', function init() {
     cube.position.set( 0, 0.05, 0 );
     scene.add( cube );
 
+    // Other cubes
+    for (let i=0; i < numCubes; i++) {
+        smallCube = new THREE.Mesh( new THREE.BoxGeometry( 0.05, 0.05, 0.05 ), new THREE.MeshNormalMaterial() );
+        let x = getRandomInt(-20, 20, 0, 1);
+        let z = getRandomInt(-20, 20, 0, 1);
+
+        smallCube.position.set( x, 0.05, z);
+        smallCubes.push( smallCube );
+        scene.add(smallCubes[i]);
+    }
+
+    for (let i=0; i < smallCubes.length; i++) {
+        scene.add(smallCubes[i]);
+    }
+
     initEvents();
     onWindowResize();
     animate();
@@ -73,13 +91,13 @@ function initEvents() {
 function onKeyDown(e) {
     // Keys pressed for translations
     if (e.key === 'w') {
-        speed = 0.01; // Move forward
+        speed = 0.02; // Move forward
     } else if (e.key === 's') {
-        speed = -0.01; // Move backward
+        speed = -0.02; // Move backward
     } else if (e.key === 'a') {
-        cube.rotateY(0.1); // Rotate left (yaw)
+        cube.rotateY(0.15); // Rotate left (yaw)
     } else if (e.key === 'd') {
-        cube.rotateY(-0.1); // Rotate right (yaw)
+        cube.rotateY(-0.15); // Rotate right (yaw)
     } else if (e.key === 'b') {
         speed = 0.0; // Brake
     }
@@ -93,11 +111,16 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame( animate );
 
+    rotateSmallCubes();
+
+    // TODO
+    // cube.geometry.BoxGeometry
+
     velocity += (speed - velocity) * 0.3;
     cube.translateZ( velocity );
 
     // No clue how this works lol
-    a.lerp( cube.position, 0.4 );
+    a.lerp( cube.position, 0.5 );
     b.copy( goal.position );
     dir.copy( a ).sub( b ).normalize();
     const dis = a.distanceTo( b ) - cameraDistance;
@@ -105,4 +128,23 @@ function animate() {
 
     camera.lookAt( cube.position );
     renderer.render( scene, camera );
+}
+
+function getRandomInt(min, max, exclude, replace) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    num = Math.floor(Math.random() * (max - min + 1)) + min;
+    return num = num === exclude ? replace : num;
+}
+
+function rotateSmallCubes() {
+    for (let i=0; i < smallCubes.length; i++) {
+        smallCubes[i].rotateY( 0.1 );
+    }
+}
+
+function bounceSmallCubes() {
+    for (let i=0; i < smallCubes.length; i++) {
+        return n;
+    }
 }
